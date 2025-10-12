@@ -69,7 +69,7 @@ Follow these steps to set up and run the project on your local machine.
 1.  **Clone the Repository**
     ```bash
     git clone https://github.com/daveralphy/churn-analysis-by-dave.git
-    cd church-analysis-by-dave
+    cd churn-analysis-by-dave
     ```
 
 2.  **Create and Activate a Virtual Environment**
