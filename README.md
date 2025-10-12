@@ -6,7 +6,7 @@ An end-to-end machine learning application that predicts customer churn and anal
 
 **Live App URL:** https://churn-analysis-by-dave.streamlit.app/
 
-**Video Demo:** `[INSERT YOUR YOUTUBE/LOOM VIDEO LINK HERE]`
+**Video Demo:** `coming soon`
 
 ---
 
