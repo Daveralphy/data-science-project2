@@ -133,13 +133,15 @@ b64_image = get_image_as_base64(profile_pic_path)
 if b64_image:
     st.markdown(f"""
         <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 1rem;">
-            <img src="data:image/png;base64,{b64_image}" style="border-radius: 50%; width: 100px; height: 100px;">
-            <div style="line-height: 1.3;">
+            <img src="data:image/png;base64,{b64_image}" style="border-radius: 50%; width: 90px; height: 90px;">
+            <div style="line-height: 1.2;">
                 <div style="font-size: 0.9rem; color: #888; margin: 0;">Designed by</div>
-                <h2 style="margin: 0; padding: 0;">Daphael Daveal</h2>
+                <div style="font-size: 1.75rem; font-weight: bold; margin: 0; padding: 0;">Raphael Daveal</div>
                 <div style="font-size: 1rem; color: #555; margin: 0;">Machine Learning Engineer</div>
-                <a href="https://www.linkedin.com/in/daveralphy/" target="_blank" style="text-decoration: none;"><i>LinkedIn</i></a> | 
-                <a href="https://github.com/daveralphy" target="_blank" style="text-decoration: none;"><i>GitHub</i></a>
+                <div style="margin-top: 4px;">
+                    <a href="https://www.linkedin.com/in/daveralphy/" target="_blank" style="text-decoration: none;"><i>LinkedIn</i></a> | 
+                    <a href="https://github.com/daveralphy" target="_blank" style="text-decoration: none;"><i>GitHub</i></a>
+                </div>
             </div>
         </div>
     """, unsafe_allow_html=True)
