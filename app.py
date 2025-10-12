@@ -146,7 +146,7 @@ if b64_image:
         </div>
     """, unsafe_allow_html=True)
 
-st.subheader("Project Overview")
+st.subheader("Application Overview")
 st.markdown("""
 This application predicts customer churn and analyzes Customer Lifetime Value (CLV) to help prioritize retention efforts.
 Navigate through the tabs to predict churn for a single customer, review model performance, or explore the CLV analysis.
