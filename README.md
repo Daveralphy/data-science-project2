@@ -1,17 +1,16 @@
 # SaaS Customer Churn & Lifetime Value Prediction
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://your-app-url.streamlit.app/) <!-- Replace with your live app URL -->
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://churn-analysis-by-dave.streamlit.app/)
 
 An end-to-end machine learning application that predicts customer churn and analyzes Customer Lifetime Value (CLV) to enable data-driven retention strategies. The project is deployed as an interactive web app using Streamlit.
 
-**Live App URL:** `[INSERT YOUR DEPLOYED STREAMLIT URL HERE]`
+**Live App URL:** https://churn-analysis-by-dave.streamlit.app/
 
 **Video Demo:** `[INSERT YOUR YOUTUBE/LOOM VIDEO LINK HERE]`
 
 ---
 
-!App Screenshot
-*Replace this with a screenshot of your running application.*
+![App Screenshot](assets/churndashboard.png)
 
 ## 1. Business Problem
 
@@ -69,8 +68,8 @@ Follow these steps to set up and run the project on your local machine.
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/your-username/project2-churn-prediction.git
-    cd project2-churn-prediction
+    git clone https://github.com/daveralphy/churn-analysis-by-dave.git
+    cd church-analysis-by-dave
     ```
 
 2.  **Create and Activate a Virtual Environment**
