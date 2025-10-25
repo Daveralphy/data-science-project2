@@ -361,38 +361,48 @@ if all(v is not None for v in [performance_df, test_df, train_df, models]):
     with tabs[2]:
         st.header("Customer Lifetime Value (CLV) Analysis")
         st.markdown("This section analyzes the relationship between the historical CLV proxy and customer churn based on the test dataset.")
-        
-        # Create CLV Quartiles
-        test_df['clv_quartile'] = pd.qcut(test_df['CLV'], 4, labels=['Low', 'Medium', 'High', 'Premium'], duplicates='drop')
-        
-        col1, col2 = st.columns(2)
-        
+
+        # --- IMPORTANT: Work on a copy to avoid caching issues ---
+        analysis_df = test_df.copy()
+
+        # Define segment labels and create the segments using quartiles
+        segment_labels = ['Low', 'Medium', 'High', 'Premium']
+        try:
+            analysis_df['clv_segment'] = pd.qcut(analysis_df['CLV'], 4, labels=segment_labels, duplicates='drop')
+        except ValueError as e:
+            st.error(f"Could not create CLV segments. The data distribution may be too skewed. Error: {e}")
+            st.stop()
+
+        col1, col2 = st.columns(2, gap="large")
+
         with col1:
             st.subheader("CLV Distribution")
-            fig = px.histogram(test_df, x="CLV", nbins=50, title="Distribution of Customer Lifetime Value (CLV)",
-                               color_discrete_sequence=['#6366F1'])
-            fig.update_layout(xaxis_title="CLV ($)", yaxis_title="Number of Customers", template="plotly_white")
-            st.plotly_chart(fig, use_container_width=True)
+            fig_dist = px.histogram(analysis_df, x="CLV", nbins=50, title="Distribution of Customer Lifetime Value (CLV)",
+                                   color_discrete_sequence=['#6366F1'])
+            fig_dist.update_layout(xaxis_title="CLV ($)", yaxis_title="Number of Customers", template="plotly_white")
+            st.plotly_chart(fig_dist, use_container_width=True)
 
         with col2:
             st.subheader("Churn Rate by CLV Quartile")
-            churn_by_clv = test_df.groupby('clv_quartile', observed=False)['Churn'].mean().reset_index()
-            fig = px.bar(churn_by_clv, x='clv_quartile', y='Churn', title="Churn Rate by CLV Quartile",
+            churn_by_segment = analysis_df.groupby('clv_segment', observed=False)['Churn'].mean().reset_index()
+            fig_churn = px.bar(churn_by_segment, x='clv_segment', y='Churn',
                          labels={'Churn': 'Churn Rate', 'clv_quartile': 'CLV Quartile'}, text_auto='.1%',
-                         color='clv_quartile',
+                         color='clv_segment', category_orders={"clv_segment": segment_labels},
                          color_discrete_map={'Low': '#A5B4FC', 'Medium': '#818CF8', 'High': '#6366F1', 'Premium': '#4F46E5'})
-            fig.update_layout(template="plotly_white", showlegend=False)
-            st.plotly_chart(fig, use_container_width=True)
+            fig_churn.update_layout(template="plotly_white", showlegend=False)
+            st.plotly_chart(fig_churn, use_container_width=True)
 
+        st.divider()
         st.subheader("Key Business Takeaway")
         # --- Dynamic Insight Generation ---
-        highest_churn_segment = churn_by_clv.sort_values('Churn', ascending=False).iloc[0]
-        lowest_churn_segment = churn_by_clv.sort_values('Churn', ascending=True).iloc[0]
-        average_churn_rate = test_df['Churn'].mean()
+        churn_by_segment = analysis_df.groupby('clv_segment', observed=False)['Churn'].mean().reset_index()
+        highest_churn_segment = churn_by_segment.sort_values('Churn', ascending=False).iloc[0]
+        lowest_churn_segment = churn_by_segment.sort_values('Churn', ascending=True).iloc[0]
+        average_churn_rate = analysis_df['Churn'].mean()
         
         st.success(f"""
-        **Insight**: The **{highest_churn_segment['clv_quartile']}** customer segment is the most vulnerable, with a churn rate of **{highest_churn_segment['Churn']:.1%}**. 
-        This is significantly higher than the average churn rate of {average_churn_rate:.1%} and starkly contrasts with the **{lowest_churn_segment['clv_quartile']}** segment's rate of just {lowest_churn_segment['Churn']:.1%}.
+        **Insight**: The **{highest_churn_segment['clv_segment']}** customer quartile is the most vulnerable, with a churn rate of **{highest_churn_segment['Churn']:.1%}**. 
+        This is significantly higher than the average churn rate of {average_churn_rate:.1%} and starkly contrasts with the **{lowest_churn_segment['clv_segment']}** quartile's rate of just {lowest_churn_segment['Churn']:.1%}.
         
         **Recommendation**: Immediately prioritize retention campaigns for the **High** and **Premium** CLV customers. 
         Given their high historical value, the ROI on retaining them is substantial. A targeted campaign offering proactive support, loyalty discounts, or a contract review could be highly effective.
